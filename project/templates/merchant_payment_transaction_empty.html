@@ -1,0 +1,64 @@
+{% extends 'paydeelink_layout.html' %}
+
+
+{% block nav %}
+
+<nav xmlns:th="http://www.thymeleaf.org">
+	<div class="container-fluid" thstyle="'height:120px;background-color:'+${brandColor}" style="height:120px;background-color:{{brandColor}}">
+		<div class="d-flex align-items-start justify-content-between">
+			<div class="dropdown p-1">
+				<a href="#" style="color: white" class="dropdown-toggle" data-toggle="dropdown">Settings</a>      
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    	<a id="payment" th:href="@{/payment}" class="dropdown-item" >Payment</a>
+			        <a id="transaction" th:href="@{/transaction}" class="dropdown-item" >Transaction</a>
+			       	<a id="profile" th:href="@{/profile_settings}" class="dropdown-item" >Profile</a>                    
+			    </div>
+			</div>
+			<a class="p-1" th:href="@{/logout}" style="color: white"><span class="fa fa-sign-out"></span> Logout</a>
+		</div>
+	</div>
+</nav>
+{% endblock nav %}
+		
+{% block contentA %}
+
+<div class="container">
+
+	<div class="row justify-content-center">
+        <div class="col-sm-4">
+			<form autocomplete="off">
+				<div class="form-group" >
+					<div class="row justify-content-center" style="margin-top: -50px">
+						<img class="wise-logo" src="{{url_for('static', filename='images/logo_Paydee_Test.jpg')}}">
+					</div>
+				</div>
+				
+				<div th:if="${!isCustomerPaymentHistoriesEmpty}"> 
+					<div class="form-group">
+						<p1 style="color:rgb(219, 208, 208); float: left;"> Input/Search</p1>
+				    </div>
+				    
+				    <div class="form-group">
+						<input type="text" style="border-radius: 30px 30px 30px 30px" name="search" placeholder="Search" id=searchInput>
+				    </div>
+			    </div>
+
+				<div th:if="${isCustomerPaymentHistoriesEmpty}">
+					<div class="row justify-content-center" style="margin-top:100px;">			
+						<div class="d-flex align-items-center flex-column  mb-3">
+							<div class="p-2"><h3><strong>No Transaction Yet</strong></h3></div>
+							<div><p>You'll see all the transaction listed here once you've made payment.</p></div>
+							<div class="p-2"><a type="submit" class="btn btn-primary btn-block" th:href="@{/payment}" style="border-color: white; background-color:{{brandColor}}">Make Payment Now</a></div>
+						</div>
+					</div>
+				</div>				
+			    
+			</form>	
+		</div>
+	</div>
+</div>
+
+
+
+
+{% endblock contentA %}
