@@ -1,0 +1,68 @@
+{% extends 'paydeelink_layout.html' %}
+
+
+{% block nav %}
+	<nav class="navbar navbar-expand-lg" style="background-color: #F8A1A1">
+		<a class="navbar-brand" href="@{/}">
+			<img src="{{url_for('static', filename='/images/pd_nav.png')}}" width="100" height="40" alt="paydee">
+		</a>
+	</nav>
+{% endblock nav %}
+
+
+{% block contentA %}
+
+<div class="container">
+
+	<div class="row justify-content-center">
+		<div class="col-lg-4 col-md-6">
+			<div class="my-5 text-center">
+				<h3 style="font-weight: bold">Login</h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="row justify-content-center">
+		<div class="col-lg-4 col-md-6">
+			<form th:action="@{/login}" method="post" autocomplete="off">
+				<div class="form-group">
+					<span class="has-float-label">
+						<input type="email" class="form-control" th:name="email" placeholder="Email Address" id="email"
+							required="required">
+						<label for="email" style="font-weight:bold">Email Address <span
+								class="required">*</span></label>
+					</span>
+				</div>
+
+				<div class="form-group">
+					<span class="has-float-label pass_show">
+						<input type="password" th:name="password" class="form-control" id="txtoldpass"
+							placeholder="Password" required="required" autocomplete="off">
+						<label for="txtoldpass" style="font-weight:bold">Password <span
+								class="required">*</span></label>
+					</span>
+					<span id="error_oldpass" class="error"></span>
+					<a th:href="@{/forgot_password}" class="btn btn-block"
+						style="border:none;background-color:none;text-align:right">Forgot password?</a>
+				</div>
+
+				<button type="submit" class="btn btn-primary btn-block"
+					style="border-color: white;background-color: #F8A1A1">Login</button>
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<script>
+	$(document).ready(function () {
+		$('.pass_show').append('<span class="ptxt" style="color: #F8A1A1">Show</span>');
+	});
+	$(document).on('click', '.pass_show .ptxt', function () {
+		$(this).text($(this).text() == "Show" ? "Hide" : "Show");
+		$(this).prev().prev().attr('type', function (index, attr) {
+			return attr == 'password' ? 'text' : 'password';
+		});
+	});
+</script>
+{% endblock contentA %}

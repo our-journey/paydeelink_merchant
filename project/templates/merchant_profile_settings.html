@@ -1,0 +1,503 @@
+{% extends 'paydeelink_layout.html' %}
+
+
+{% block nav %}
+
+<nav xmlns:th="http://www.thymeleaf.org">
+	<div class="container-fluid" thstyle="'height:120px;background-color:'+${brandColor}" style="height:120px;background-color:{{brandColor}}">
+		<div class="d-flex align-items-start justify-content-between">
+			<div class="dropdown p-1">
+				<a href="#" style="color: white" class="dropdown-toggle" data-toggle="dropdown">Settings</a>      
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    	<a id="payment" th:href="@{/payment}" class="dropdown-item" >Payment</a>
+			        <a id="transaction" th:href="@{/transaction}" class="dropdown-item" >Transaction</a>
+			       	<a id="profile" th:href="@{/profile_settings}" class="dropdown-item" >Profile</a>                    
+			    </div>
+			</div>
+			<a class="p-1" th:href="@{/logout}" style="color: white"><span class="fa fa-sign-out"></span> Logout</a>
+		</div>
+	</div>
+</nav>
+{% endblock nav %}
+
+{% block contentA %}
+
+<div class="row justify-content-center" style="margin-top: -50px">
+	<img class="wise-logo" src="{{url_for('static', filename='images/logo_Paydee_Test.jpg')}}">
+</div>
+				
+<div class="container" style="margin-top:20px;">
+	
+	<ul class="nav nav-pills mb-5 black" id="pills-tab" role="tablist">
+	  <li class="nav-item" th:if="${merchantProfileSettings != null}">
+	    <a class="nav-link active" id="pills-profile-tab" data-toggle="tab" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="true"><span class="fa fa-user"></span> Profile</a>
+	  </li>
+	  <li class="nav-item" th:if="${merchantMessageSettings != null}">	  
+	    <a class="nav-link" id="pills-message-tab" data-toggle="tab" href="#pills-message" role="tab" aria-controls="pills-message" aria-selected="false"><span class="fa fa-envelope"></span> Messages</a>
+	  </li>
+	  <li class="nav-item" th:if="${merchantPaymentSettings != null}">	  	  
+	    <a class="nav-link" id="pills-payment-tab" data-toggle="tab" href="#pills-payment" role="tab" aria-controls="pills-payment" aria-selected="false"><span class="fa fa-money"></span> Payment</a>
+	  </li>
+	</ul>	
+	
+	<div class="tab-content" id="pills-tabContent">
+	
+		<div th:if="${merchantProfileSettings != null}" class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+			<form id="updateProfileForm" class="form-horizontal" th:data-url="@{/profile/save}" autocomplete="off">
+							
+			    <div class="form-group" >
+			    	<div class="row justify-content-center">
+			    		<label for="merchantLogo">
+							<img id="currentImage" src="{{url_for('static', filename='images/logo_Paydee_Test.jpg')}}" height="100px">
+					    </label>
+						<input type="file" class="form-control" th:name="logoFile" id="merchantLogo" accept="image/jpeg">
+					</div>
+					<div class="row justify-content-center">
+						<small>*Click on logo to upload</small>
+					</div>
+			    </div>
+			    
+			    <div class="row">
+				    <div class="col-sm-6">
+						<div class="form-group">
+			                <span class="has-float-label">
+			                    <input type="text" class="form-control" th:name="companyName" th:field="${merchantProfileSettings.companyName}" placeholder="Company Name" id="company_name" required="required"  readonly>
+			                    <label for="company_name" style="font-weight:bold">Company Name <span class="required">*</span></label>
+			                </span>
+					    </div>
+			   		</div>
+			   		
+				    <div class="col-sm-6">
+					    <div class="form-group">
+					        <span class="has-float-label">
+					            <input type="text" class="form-control" th:name="companyRegistrationNumber" th:field="${merchantProfileSettings.companyRegistrationNumber}" placeholder="Company Registration Number" id="company_registration_number" required="required" readonly>
+					            <label for="company_registration_number" style="font-weight:bold">Company Registration Number <span class="required">*</span></label>
+					        </span>
+			            </div>
+			        </div>
+	            </div>
+			    
+			    <div class="row">
+				    <div class="col-sm-6">
+						<div class="form-group">
+			                <span class="has-float-label">
+			                    <input type="text" class="form-control" th:name="mdid" th:field="${merchantProfileSettings.mdid}" placeholder="Merchant MDID" id="merchant_mdid" required="required"  readonly>
+			                    <label for="merchant_mdid" style="font-weight:bold">Merchant MDID <span class="required">*</span></label>
+			                </span>
+					    </div>
+			   		</div>
+			   		
+				    <div class="col-sm-6">
+					    <div class="form-group">
+					        <span class="has-float-label">
+					            <input type="text" class="form-control" th:name="businessName" th:field="${merchantProfileSettings.businessName}" placeholder="Business Name" id="merchant_name" required="required" minlength="1" th:maxlength="${businessNameMaxLength}" readonly>
+					            <label for="merchant_name" style="font-weight:bold">Business Name <span class="required">*</span></label>
+					            <small id="merchantNameHelp" class="form-text text-muted">*Business Name (max 25 characters)</small>
+					        </span>
+			            </div>
+			        </div>
+	            </div>
+	            
+	            <div class="row">
+		            <div class="col-sm-6">
+			            <div class="form-group">
+							<span class="has-float-label">
+							    <textarea class="form-control" rows="5" cols="20" th:name="businessDescription" th:field="${merchantProfileSettings.businessDescription}"  placeholder="Business Description" id="merchant_message" required="required" minlength="10" th:maxlength="${businessDescMaxLength}" readonly></textarea>
+							    <label for="merchant_message" style="font-weight:bold">Business Description<span class="required">*</span></label>
+							    <small id="merchantMessageHelp" class="form-text text-muted">*Business Description (max 250 characters)</small> 
+							</span>
+			            </div>
+	            	</div>
+	            
+		            <div class="col-sm-6">
+						<div class="form-group">
+						    <span class="has-float-label">
+						        <textarea class="form-control" rows="5" cols="20" th:name="businessAddress" th:field="${merchantProfileSettings.businessAddress}" placeholder="Business Address" id="merchant_address" required="required" readonly></textarea>
+						        <label for="merchant_address" style="font-weight:bold">Business Address <span class="required">*</span></label>
+						    </span>
+						</div>
+					</div>
+				</div>			
+				
+				<div class="row">
+			     	<div class="col-sm-6">
+					    <div class="form-group">	
+				            <span class="has-float-label">
+				                <input type="tel" class="form-control" th:name="merchantPhone" th:field="${merchantProfileSettings.merchantPhone}" placeholder="Business Phone starts with 60" id="merchantPhone" minlength="9" maxlength="14" th:pattern="${phoneRegex}" readonly>
+				                <label for="merchantPhone" style="font-weight:bold">Merchant Business Phone</label>
+				            </span>
+					    </div>
+			    	</div>
+			    	
+			     	<div class="col-sm-6">
+					    <div class="form-group">	
+				            <span class="has-float-label">
+				                <input type="tel" class="form-control" th:name="merchantPicPhone" th:field="${merchantProfileSettings.merchantPicPhone}" placeholder="PIC Phone starts with 60" id="merchantPicPhone" minlength="9" maxlength="14" th:pattern="${phoneRegex}" readonly>
+				                <label for="merchantPicPhone" style="font-weight:bold">Merchant PIC Phone</label>
+				            </span>
+					    </div>
+			    	</div>			    	
+				</div>
+
+				<div class="row">
+	            	<div class="col-sm-6">
+						<div class="form-group">
+							<span class="has-float-label">
+			                    <input type="email" class="form-control" th:name="merchantEmail" th:field="${merchantProfileSettings.merchantEmail}" placeholder="Merchant Email" id="email" required="required" readonly>
+			                    <label for="email" style="font-weight:bold">Merchant Email <span class="required">*</span></label>
+			                    <small id="businessEmailHelp" class="form-text text-muted">*for merchant send notification email purpose</small>	                    
+					        </span>
+						</div>	
+					</div>			        
+			     				    	
+			    	<div class="col-sm-6">
+					    <div class="form-group">
+							<label for="brandColor" style="font-weight: bold">Brand Color :</label> 
+							<input type="color" id="brandColor" name="favcolor" th:name="brandColor" th:field="${merchantProfileSettings.brandColor}">
+						</div>
+					</div>
+				</div>
+								
+				<div class="row">
+		            <div class="col-sm-12">
+			            <div class="form-group">
+							<span class="has-float-label">
+							    <textarea class="form-control" rows="3" cols="20" th:name="paymentSlipMessage" th:field="${merchantProfileSettings.paymentSlipMessage}" placeholder="Payment slip message" id="merchant_message" required="required" minlength="10" th:maxlength="${customThankYouMessageMaxLength}"></textarea>
+							    <label for="merchant_message" style="font-weight:bold">Payment Slip Thank You Message<span class="required">*</span></label>
+							    <small id="merchantMessageHelp" class="form-text text-muted">*Payment Slip Thank You Message (max 250 characters)</small> 
+							</span>
+			            </div>
+	            	</div>
+				</div>	
+				
+				<div class="form-group">
+					<div class="row">
+						<div class="col-auto mr-auto"></div>
+						<div class="col-auto">
+							<button type="submit" class="btn btn-primary btn-block" style="border-color: white;background-color: {{brandColor}}">Save</button>
+						</div>
+					</div>
+				</div>
+				
+			</form>
+		</div>
+		  
+		<div th:if="${merchantMessageSettings != null}" class="tab-pane fade" id="pills-message" role="tabpanel" aria-labelledby="pills-message-tab">
+			<form id="updateMessageForm" class="form-horizontal" th:data-url="@{/message/save}" autocomplete="off">
+				<fieldset class="fieldset">
+					<h3 class="fieldset-title" style="font-weight:bold">Payment Link message</h3>
+					<hr style="border:1px solid black">
+					
+					<div class="row">
+	            		<div class="col-sm-6">
+							<div class="form-group">
+								<span class="has-float-label">
+								    <textarea class="form-control" th:name="paymentSmsContent" th:field="${merchantMessageSettings.paymentSmsContent}" placeholder="Payment Link SMS Content" id="payment_link_sms" required="required"></textarea>
+								    <label for="payment_link_sms" style="font-weight:bold">Payment Link SMS Content <span class="required">*</span></label>
+								    <small id="paymentLinkSMSHelp" class="form-text text-muted">*The content that will be sent to customer through <strong>SMS</strong></small>
+								</span>
+							</div>
+						</div>
+						
+						<div class="col-sm-6">  
+							<div class="form-group">
+								<span class="has-float-label">
+								    <textarea class="form-control" th:name="paymentEmailContent" th:field="${merchantMessageSettings.paymentEmailContent}" placeholder="Payment Link Email Content" id="payment_link_email" required="required"></textarea>
+								    <label for="payment_link_email" style="font-weight:bold">Payment Link Email Content <span class="required">*</span></label>
+								    <small id="paymentLinkEmailHelp" class="form-text text-muted">*The content that will be sent to customer through <strong>EMAIL</strong></small>
+								</span>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				
+				<fieldset class="fieldset">
+					<h3 class="fieldset-title" style="font-weight:bold">Expiration Link Reminder</h3>
+					<hr style="border:1px solid black">
+					<div class="row">
+	            		<div class="col-sm-6">
+							<div class="form-group">
+								<span class="has-float-label">
+								    <textarea class="form-control" th:name="paymentReminderSmsContent" th:field="${merchantMessageSettings.paymentReminderSmsContent}" placeholder="Reminder SMS Content" id="reminder_sms" required="required"></textarea>
+								    <label for="reminder_sms" style="font-weight:bold">Reminder SMS Content <span class="required">*</span></label>
+								    <small id="reminderSMSHelp" class="form-text text-muted">*The content that will be sent to customer through <strong>SMS</strong></small>
+								</span>
+							</div>
+						</div>
+					
+	            		<div class="col-sm-6">
+							<div class="form-group">
+								<span class="has-float-label">
+								    <textarea class="form-control" th:name="paymentReminderEmailContent" th:field="${merchantMessageSettings.paymentReminderEmailContent}"  placeholder="Reminder Email Content" id="reminder_email"  required="required"></textarea>
+								    <label for="reminder_email" style="font-weight:bold">Reminder Email Content <span class="required">*</span></label>
+								    <small id="reminderEmailHelp" class="form-text text-muted">*The content that will be sent to customer through <strong>EMAIL</strong></small>
+								</span>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				
+				<fieldset class="fieldset">
+					<h3 class="fieldset-title" style="font-weight:bold">Payment Status Notification (Customer)</h3>
+					<hr style="border:1px solid black">
+					<div class="row">
+	            		<div class="col-sm-6">
+							<div class="form-group">
+								<span class="has-float-label">
+								    <textarea class="form-control" th:name="paymentSuccessSmsContentCustomer" th:field="${merchantMessageSettings.paymentSuccessSmsContentCustomer}" placeholder="Success Payment SMS Notification Content" id="customer_success_payment_sms_notification"></textarea>
+								    <label for="customer_success_payment_sms_notification" style="font-weight:bold">Success Payment SMS Notification Content <span class="required">*</span></label>
+								    <small id="customerSuccessPaymentSMSNotificationHelp" class="form-text text-muted">*The content that will be sent to customer through <strong>SMS</strong></small>
+								</span>
+							</div>
+						</div>
+					
+	            		<div class="col-sm-6">
+							<div class="form-group">
+								<span class="has-float-label">
+								    <textarea class="form-control" th:name="paymentFailedSmsContentCustomer" th:field="${merchantMessageSettings.paymentFailedSmsContentCustomer}" placeholder="Failed Payment SMS Notification Content" id="customer_failed_payment_sms_notification"></textarea>
+								    <label for="customer_failed_payment_sms_notification" style="font-weight:bold">Failed Payment SMS Notification Content <span class="required">*</span></label>
+								    <small id="customerFailedPaymentSMSNotificationHelp" class="form-text text-muted">*The content that will be sent to customer through <strong>SMS</strong></small>
+								</span>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				
+				<fieldset class="fieldset">
+					<h3 class="fieldset-title" style="font-weight:bold">Payment Status Notification (Merchant)</h3>
+					<hr style="border:1px solid black">
+					<div class="row">
+		            	<div class="col-sm-6">
+							<div class="form-group">
+								<span class="has-float-label">
+								    <textarea class="form-control" th:name="paymentSuccessEmailContentMerchant" th:field="${merchantMessageSettings.paymentSuccessEmailContentMerchant}" placeholder="Success Payment Email Notification Content" id="merchant_success_payment_email_notification"></textarea>
+								    <label for="merchant_success_payment_email_notification" style="font-weight:bold">Success Payment Email Notification Content <span class="required">*</span></label>
+								    <small id="merchantSuccessPaymentEmailNotificationHelp" class="form-text text-muted">*The content that will be sent to merchant through <strong>EMAIL</strong></small>
+								</span>
+							</div>
+						</div>
+						
+						<div class="col-sm-6">  
+							<div class="form-group">
+								<span class="has-float-label">
+								    <textarea class="form-control" th:name="paymentFailedEmailContentMerchant" th:field="${merchantMessageSettings.paymentFailedEmailContentMerchant}" placeholder="Failed Payment Email Notification Content" id="merchant_failed_payment_email_notification"></textarea>
+								    <label for="merchant_failed_payment_email_notification" style="font-weight:bold">Failed Payment Email Notification Content <span class="required">*</span></label>
+								    <small id="merchantFailedPaymentEmailNotificationHelp" class="form-text text-muted">*The content that will be sent to merchant through <strong>EMAIL</strong></small>
+								</span>
+							</div>
+						</div>
+					</div>
+				</fieldset>		
+				
+				<div class="form-group">
+					<div class="row">
+						<div class="col-auto mr-auto"></div>
+						<div class="col-auto">
+							<button type="submit" class="btn btn-primary btn-block" style="border-color: white; background-color: {{brandColor}}">Save</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		
+		<div th:if="${merchantPaymentSettings != null}" class="tab-pane fade" id="pills-payment" role="tabpanel" aria-labelledby="pills-payment-tab">
+			<form id="updatePaymentForm" class="form-horizontal" th:data-url="@{/payment/save}" autocomplete="off">				
+				<fieldset class="fieldset">
+					<h3 class="fieldset-title" style="font-weight:bold">Payment Link</h3>
+			        <hr style="border:1px solid black">
+			        <div class="row">
+		            	<div class="col-sm-4">
+							<div class="form-group">
+						        <span class="has-float-label">
+						            <input type="number" value="48" class="form-control" th:name="paymentExpirationInHour" th:field="${merchantPaymentSettings.paymentExpirationInHour}" placeholder="Expired Duration (hours)" id="expired_duration" required="required" minlength="1" maxlength="2" min="1" th:max=${expirationDurationMaxHour}>
+						            <label for="expired_duration" style="font-weight:bold">Expired Duration (hours)<span class="required">*</span></label>
+						            <small id="expiredDurationHelp" class="form-text text-muted">*The value cannot be over 48 hours. </small>
+						        </span>
+							</div>
+						</div>
+						
+						<div class="col-sm-4">
+							<div class="form-group">
+				                <span class="has-float-label">
+				                    <input type="number" value="30" class="form-control" th:name="paymentReminderIntervalInMinutes" th:field="${merchantPaymentSettings.paymentReminderIntervalInMinutes}" placeholder="Expiration Reminder Interval (minutes)" id="reminder_interval" required="required"  minlength="1" maxlength="2" th:min="${reminderDurationMinMins}">
+				                    <label for="reminder_interval" style="font-weight:bold">Expiration Reminder Interval (minutes) <span class="required">*</span></label>
+				                   	<small id="reminderIntervalHelp" class="form-text text-muted">*The value cannot be less than 30 minutes. </small>
+				                </span>
+						    </div>
+						</div>
+				    
+					    <div class="col-sm-4">        
+							<div class="form-group">
+								<span class="has-float-label">
+								    <input type="number" value="3" class="form-control" th:name="paymentReminderFrequency" th:field="${merchantPaymentSettings.paymentReminderFrequency}" placeholder="Expiration Reminder Count" id="reminder_count" required="required"  minlength="1" maxlength="2" min="1" th:max=${reminderMaxCount}>
+								    <label for="reminder_count" style="font-weight:bold">Expiration Reminder Count<span class="required">*</span></label>
+								   	<small id="reminderCountHelp" class="form-text text-muted">*The value cannot be over 3 times.</small>
+								</span>
+						    </div>
+						</div>
+					</div>
+						
+					
+					<div class="form-group">
+						<div class="row">
+						    <div class="col-auto mr-auto"></div>
+							<div class="col-auto">
+								<button type="submit" class="btn btn-primary btn-block" style="border-color: white; background-color:{{brandColor}}">Save</button>
+							</div>
+						</div>
+					</div>
+						
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	
+    <div th:if="${isError}">
+	    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalTitle" aria-hidden="true">
+	        <div class="modal-dialog modal-sm" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title">Error</h5>
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	                </div>
+	                <div class="modal-body">
+	                    <p th:text=${errorMessage}></p>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-secondary" style="border-color: {{brandColor}}';background-color:{{brandColor}}" data-dismiss="modal">Close</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>	
+   	</div>	 
+   		
+    <div class="modal fade" id="ajaxModal" tabindex="-1" role="dialog" aria-labelledby="ajaxModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ajaxModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="ajaxMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" style="border-color: {{brandColor}};background-color:{{brandColor}}" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>	   		
+</div>
+</body>
+
+<script>
+	document.getElementById('merchantLogo').onchange = function(e) {
+		
+	    var imageFile = this.files[0];
+	    document.getElementById('currentImage').src = window.URL.createObjectURL(imageFile);
+	}
+	
+	$(document).ready(function(){
+		
+		$('a[data-toggle="tab"]').on('show.bs.tab', function(e){
+			localStorage.setItem('activeTab', $(e.target).attr('href'));
+		})
+		
+		var activeTab = localStorage.getItem('activeTab');
+		if(activeTab) {
+			$('#pills-tab a[href="' +activeTab +'"]').tab('show');
+		}
+		
+		$("#errorModal").modal('show');
+		
+		$("#updateProfileForm").on("submit", function(e){
+			e.preventDefault();
+			var updateProfileUrl = $(this).attr("data-url");
+			
+			$.ajax({
+				url: updateProfileUrl,
+				type: "POST",
+				data: new FormData(this),
+				enctype: 'multipart/form-data',
+				processData: false,
+				contentType: false,
+				cache: false,
+				success: function(result) {
+					if(!result.includes("html")){
+						$("#ajaxModal #ajaxModalTitle").text('Update Profile Settings');	
+						$("#ajaxModal #ajaxMessage").text(result);										
+						$("#ajaxModal").modal('show');							
+					} else {
+			 			location.reload(true);							
+					}
+				},
+				error: function(result) {
+					$("#ajaxModal #ajaxModalTitle").text('Update Profile Settings');	
+					$("#ajaxModal #ajaxMessage").text('Failed to update profile settings');										
+					$("#ajaxModal").modal('show');				}
+			})
+		});
+				
+		$("#updateMessageForm").on("submit", function(e){
+			e.preventDefault();
+			var updateMessageUrl = $(this).attr("data-url");
+			
+			$.ajax({
+				url: updateMessageUrl,
+				type: "POST",
+				data: $(this).serialize(),
+				success: function(result) {
+					if(!result.includes("html")){
+						$("#ajaxModal #ajaxModalTitle").text('Update Message Settings');	
+						$("#ajaxModal #ajaxMessage").text(result);										
+						$("#ajaxModal").modal('show');							
+					} else {
+			 			location.reload(true);							
+					}
+				},
+				error: function(result) {
+					$("#ajaxModal #ajaxModalTitle").text('Update Message Settings');	
+					$("#ajaxModal #ajaxMessage").text('Failed to update message settings');										
+					$("#ajaxModal").modal('show');							}
+			})
+		});		
+		
+		$("#updatePaymentForm").on("submit", function(e){
+			e.preventDefault();
+			var updatePaymentUrl = $(this).attr("data-url");
+			
+			$.ajax({
+				url: updatePaymentUrl,
+				type: "POST",
+				data: $(this).serialize(),
+				success: function(result) {
+					if(!result.includes("html")){
+						$("#ajaxModal #ajaxModalTitle").text('Update Payment Settings');	
+						$("#ajaxModal #ajaxMessage").text(result);										
+						$("#ajaxModal").modal('show');							
+					} else {
+			 			location.reload(true);							
+					}		
+				},
+				error: function(result) {
+					$("#ajaxModal #ajaxModalTitle").text('Update Payment Settings');	
+					$("#ajaxModal #ajaxMessage").text('Failed to update payment settings');										
+					$("#ajaxModal").modal('show');	
+				}
+			})
+		});	
+		
+		$("#ajaxModal").on('hidden.bs.modal', function(){
+ 			location.reload(true);	
+		});		
+		
+			
+	});
+
+</script>
+
+{% endblock contentA %}

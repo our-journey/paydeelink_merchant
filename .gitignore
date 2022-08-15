@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+project/__pycache__/*
+
+# C extensions
+*.so
+
+# Distribution / packaging
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+vsenv/*
+*.egg-info/
+.installed.cfg
+*.egg
+
+
+project/__pycache__/__init__.cpython-38.pyc

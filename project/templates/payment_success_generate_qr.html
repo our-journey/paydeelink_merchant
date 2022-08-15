@@ -1,0 +1,202 @@
+{% extends 'paydeelink_layout.html' %}
+
+
+{% block nav %}
+
+<nav xmlns:th="http://www.thymeleaf.org">
+	<div class="container-fluid" thstyle="'height:120px;background-color:'+${brandColor}" style="height:120px;background-color:{{brandColor}}">
+		<div class="d-flex align-items-start justify-content-between">
+			<div class="dropdown p-1">
+				<a href="#" style="color: white" class="dropdown-toggle" data-toggle="dropdown">Settings</a>      
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    	<a id="payment" th:href="@{/payment}" class="dropdown-item" >Payment</a>
+			        <a id="transaction" th:href="@{/transaction}" class="dropdown-item" >Transaction</a>
+			       	<a id="profile" th:href="@{/profile_settings}" class="dropdown-item" >Profile</a>                    
+			    </div>
+			</div>
+			<a class="p-1" th:href="@{/logout}" style="color: white"><span class="fa fa-sign-out"></span> Logout</a>
+		</div>
+	</div>
+</nav>
+{% endblock nav %}
+		
+{% block contentA %}
+<div class="container">
+	<div class="row justify-content-center">
+        <div class="col-sm-4">
+			<div class="row justify-content-center">
+				<div class="form-group" >
+					<div class="row justify-content-center" style="margin-top: -50px">
+						<img class="wise-logo" src="{{url_for('static', filename='images/logo_Paydee_Test.jpg')}}">
+					</div>
+				</div>
+			</div>
+			
+			<div class="row justify-content-center">
+				<div class="form-group">
+					<h2 style="font-weight: bold" th:text="{{companyName}}">{{companyName}}</h2>
+				</div>
+			</div>
+			
+			<div class="form-group">
+		    	<p style="font-size:20px"class="text-center" th:text="'One Time Payment QR Valid ' + ${customerPayment.paymentLinkValidity} + ' hours'">One Time Payment QR Valid {{paymentLinkValidity}} hours
+				</p>
+		    </div> 
+			
+			<div class="row justify-content-center">
+				<div class="form-group" style="background-color:white; border-color:gray;border-style: solid; height: auto; width:auto">
+					<img src="{{url_for('static', filename='images/QR.png')}}" style="width: 300px;height:300px; margin-left:auto; margin-right:auto; display:block;">
+			        <p style="text-align:center">Scan to pay</p>
+				</div>
+			</div>
+			
+			<div class="row justify-content-center">
+				<div class="form-group" style="width:70%">							   					   	
+					<a type="button" class="btn btn-primary btn-block" id="printButton" style="border-color:white;background-color:{{brandColor}}" th:href="${customerPayment.qrCodeUrlPath}" download>Print</a>
+				</div>
+			</div>  			
+			
+		    <div class="form-group">
+			    <div class="text-center">
+				    <h4 style="color:white"><span style="width:200px;background-color:{{statusColorCode}}!important" class="badge rounded-pill bg-danger" th:text="${customerPayment.statusPaid}">{{statusPaid}}</span></h4>
+		    	</div>
+		    </div>
+		    
+		    <p class="text-center">ID: {{id}}<br>
+								    Date: {{formattedCreatedDate}}<br>
+								    Time: {{formattedCreatedTime}}<br>
+								    Amount: {{currency}} {{amountValue}}<br>
+								  	Reference No: {{referenceNumber}}<br>
+								  	Remarks: {{remarks}}<br>
+
+			<div class="row justify-content-center" >
+				<div class="form-group" style="width:100%">							   					   	
+					<button type="button" class="btn btn-primary btn-block" th:if="${customerPayment.showButton and (customerPayment.action == 1)}" style="border-color:white;background-color:{{brandColor}}" data-toggle="modal" data-target="#cancelModal">Cancel</button>
+					<!--button type="button" class="btn btn-primary btn-block" th:if="${customerPayment.showButton and (customerPayment.action == 2)}" th:style="'border-color:white;background-color:'+${brandColor}" data-toggle="modal" data-target="#reverseModal">Reverse</button-->					
+				</div>
+			</div>
+			
+		    <div class="modal" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModal" aria-hidden="true">
+		        <div class="modal-dialog modal-sm" role="document">
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <h5 class="modal-title">Cancellation</h5>
+		                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                        <span aria-hidden="true">&times;</span>
+		                    </button>
+		                </div>
+		                <div class="modal-body">
+		                    <p>Do you really want to cancel the payment?</p>
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="button" class="btn btn-primary" style="border-color: {{brandColor}};background-color:{{brandColor}}" data-dismiss="modal">Close</button>
+		                    <button id="cancelButton" th:href="@{/cancel/{paymentExternalTxId}(paymentExternalTxId=${customerPayment.id})}" class="btn btn-primary" style="border-color: {{brandColor}};background-color: white;color:{{brandColor}}">Yes, I want to cancel</button>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		    
+		    <div class="modal" id="reverseModal" tabindex="-1" role="dialog" aria-labelledby="reverseModal" aria-hidden="true">
+		        <div class="modal-dialog modal-sm" role="document">
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <h5 class="modal-title">Reverse</h5>
+		                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                        <span aria-hidden="true">&times;</span>
+		                    </button>
+		                </div>
+		                <div class="modal-body">
+		                    <p>Do you really want to reverse the payment?</p>
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="button" class="btn btn-primary" style="border-color: {{brandColor}};background-color:{{brandColor}}" data-dismiss="modal">Close</button>
+		                    <button id="reverseButton" th:href="@{/void/{paymentExternalTxId}(paymentExternalTxId=${customerPayment.id})}" class="btn btn-primary" th:style="'border-color: {{brandColor}}';background-color: white;color:{{brandColor}}">Yes, I want to reverse</button>
+		                </div>
+		            </div>
+		        </div>
+		    </div>		
+		    
+		    <div class="modal fade" id="ajaxModal" tabindex="-1" role="dialog" aria-labelledby="ajaxModalTitle" aria-hidden="true">
+		        <div class="modal-dialog modal-sm" role="document">
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <h5 class="modal-title" id="ajaxModalTitle"></h5>
+		                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                        <span aria-hidden="true">&times;</span>
+		                    </button>
+		                </div>
+		                <div class="modal-body">
+		                    <p id="ajaxMessage"></p>
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="button" class="btn btn-secondary" style="border-color: {{brandColor}};background-color:{{brandColor}}" data-dismiss="modal">Close</button>
+		                </div>
+		            </div>
+		        </div>
+		    </div>			    		    	    
+        </div>        
+	</div>
+</div>
+</body>
+<script>
+
+$(document).ready(function(){
+	
+	$("#reverseButton").on("click", function(){
+		var reverseUrl = $(this).attr("href");
+		$.ajax({
+			type: "GET",
+			url:  reverseUrl,
+			success	: function(result) {
+				$("#reverseModal").modal('hide');
+				if(!result.includes("html")) {
+					$("#ajaxModal #ajaxModalTitle").text('Reverse payment');	
+					$("#ajaxModal #ajaxMessage").text(result);										
+					$("#ajaxModal").modal('show');
+				} else {
+		 			location.reload(true);												
+				}
+			},
+			error	: function(result) {
+				$("#reverseModal").modal('hide');				
+				
+				$("#ajaxModal #ajaxModalTitle").text('Reverse payment');	
+				$("#ajaxModal #ajaxMessage").text('Reverse payment failed');										
+				$("#ajaxModal").modal('show');													
+			}
+		})
+	});
+	
+	$("#cancelButton").on("click", function(){
+		var cancelUrl = $(this).attr("href");
+		$.ajax({
+			type: "GET",
+			url:  cancelUrl,
+			success	: function(result) {
+				$("#cancelModal").modal('hide');
+				if(!result.includes("html")) {
+					$("#ajaxModal #ajaxModalTitle").text('Cancel payment');	
+					$("#ajaxModal #ajaxMessage").text(result);										
+					$("#ajaxModal").modal('show');
+				} else {
+		 			location.reload(true);																	
+				}
+			},
+			error	: function(result) {
+				$("#cancelModal").modal('hide');
+				
+				$("#ajaxModal #ajaxModalTitle").text('Cancel payment');	
+				$("#ajaxModal #ajaxMessage").text('Cancel payment failed');										
+				$("#ajaxModal").modal('show');					
+			}
+		})
+	});		
+	
+	$("#ajaxModal").on('hidden.bs.modal', function(){
+			location.reload(true);																	
+	});
+
+});
+
+</script>
+{% endblock contentA %}

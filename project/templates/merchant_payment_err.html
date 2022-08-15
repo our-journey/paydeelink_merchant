@@ -1,0 +1,108 @@
+{% extends 'paydeelink_layout.html' %}
+
+
+{% block nav %}
+
+<nav xmlns:th="http://www.thymeleaf.org">
+	<div class="container-fluid" thstyle="'height:120px;background-color:'+${brandColor}" style="height:120px;background-color:{{brandColor}}">
+		<div class="d-flex align-items-start justify-content-between">
+			<div class="dropdown p-1">
+				<a href="#" style="color: white" class="dropdown-toggle" data-toggle="dropdown">Settings</a>      
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    	<a id="payment" th:href="@{/payment}" class="dropdown-item" >Payment</a>
+			        <a id="transaction" th:href="@{/transaction}" class="dropdown-item" >Transaction</a>
+			       	<a id="profile" th:href="@{/profile_settings}" class="dropdown-item" >Profile</a>                    
+			    </div>
+			</div>
+			<a class="p-1" th:href="@{/logout}" style="color: white"><span class="fa fa-sign-out"></span> Logout</a>
+		</div>
+	</div>
+</nav>
+{% endblock nav %}
+		
+{% block contentA %}
+
+<div class="container" >
+	
+	<div class="row justify-content-center">
+        <div class="col-sm-4">
+			<form id="createPaymentLinkForm" th:action="@{/send}" onsubmit="return validatePaymentSubmissionForm()" method="post" autocomplete="off">
+				<div class="form-group" >
+					<div class="row justify-content-center" style="margin-top: -50px">
+						<img class="wise-logo" src="{{url_for('static', filename='images/logo_Paydee_Test.jpg')}}">
+					</div>
+				</div>
+				
+				<div class="row justify-content-center">
+					<div class="form-group">
+						<h2 style="font-weight: bold">{{companyName}}</h2>
+					</div>
+				</div>
+				
+	            <div class="form-group">
+	                <div class="input-group">
+		                <div class="input-group-prepend" >
+		                	<span class="input-group-text" style="font-weight:bold" th:text="${currency}">{{currency}}</span>
+		                </div>
+		                    <input type="number" class="form-control" th:name="amount" placeholder="0.00" step=".01" id="amount" maxlength="4" required/>
+		                </div>
+	                <span id="amountMessage"></span>			            	                    	                		                
+	            </div>
+	            
+	            <div class="form-group">
+	                <div class="input-group">
+		                <div class="input-group-prepend" >
+		                	<button id="channelDropdown" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:style="'color:white; background-color:'+${brandColor}" style="color:white; background-color:{{brandColor}}">Channel</button>
+		                	<div class="dropdown-menu">
+		                		<a class="dropdown-item" href="#">Mobile</a>
+		                		<a class="dropdown-item" href="#">Email</a>
+		                	</div>
+		                </div>	                
+	                    <input type="text" class="form-control" th:name="mobileEmail" placeholder="Mobile Number/Email" id="mobile_email"/>
+	                </div>
+	                <span id="message"></span>			            	                    	                
+	            </div>
+	            
+	            <div class="form-group">
+	                <div class="input-group">
+		            	<input type="text" class="form-control" th:name="referenceNumber" id="reference_number" placeholder="Payment Reference" maxlength="11"/>
+		            </div>
+					<small id="referenceNumberDesc" class="form-text text-muted" style="opacity:0.5">Suggestions: order number or product name</small>																            			            
+	            </div>
+	            
+	            <div class="form-group">
+	                <div class="input-group">
+		            	<input type="text" class="form-control remarksInput" th:name="remarks" id="remarks" placeholder="What's the payment for?"/>
+		            </div>
+					<small id="remarksDesc" class="form-text text-muted" style="opacity:0.5">*Optional</small>
+	            </div>	            
+	            
+	            <input id="destinationType" type="number" th:name="destinationType" value="-1" style="display:none">
+	            
+	
+	            <button th:if="${!enabled}" id="sendLinkButton" type="submit" title="Payment submission is disabled by Admin" class="btn btn-primary btn-block" 
+	                    style="border-color: white;background-color:{{brandColor}}" disabled>SEND
+	            </button>
+	            <span th:if="${!enabled}" style="color:red">Payment submission is disabled by Admin</span>	
+	            
+            	<p class="pt-5" style="text-align:center; color:{{brandColor}}">I wish to generate</p>
+	            
+ 
+	            <button th:if="${!enabled}" id="generateLinkButton" type="submit" title="Payment submission is disabled by Admin" class="btn btn-primary btn-block mt-3" 
+	                    style="border-color: {{brandColor}}; background-color:white; color:{{brandColor}}" disabled>Payment Link
+	            </button>
+	            <span th:if="${!enabled}" style="color:red">Payment submission is disabled by Admin</span>	
+	            	            
+	
+	            <button th:if="${!enabled}" id="generateQrButton" type="submit" title="Payment submission is disabled by Admin" class="btn btn-primary btn-block mt-3" 
+	                    style="border-color: {{brandColor}}; background-color:white; color: {{brandColor}}" disabled>QR Link
+	            </button>		                                 
+	            <span th:if="${!enabled}" style="color:red">Payment submission is disabled by Admin</span>	
+	                   	                        
+	        </form>	
+        </div>        
+	</div>
+</div>
+
+
+ {% endblock contentA %}
