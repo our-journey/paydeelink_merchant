@@ -1,0 +1,135 @@
+{% extends 'v2_paydeelink_layout.html' %}
+
+{% block nav %}
+
+<nav xmlns:th="http://www.thymeleaf.org"  class="navbar navbar-expand-lg navbar-dark" style="background-color:{{brandColor}}">
+    <div class="container-fluid">
+      <a class="navbar-brand">Paydee</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" th:href="@{/payment}">Payment Link</a></li>  
+          <li class="nav-item"> <a class="nav-link" th:href="@{/transaction}">History</a></li> 
+        </ul>
+      </div>
+    </div>
+
+    <!--Right-->
+    <ul class="navbar-nav justify-content-end">
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Hello, Anon
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+		  <a class="dropdown-item" th:href="@{/profile}">Profile</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+        </div>
+      </li>
+
+    </ul>
+</nav>
+
+{% endblock nav %}
+
+
+		
+{% block contentA %}
+
+<div class="container" >
+	
+	<div class="row justify-content-center" >
+        
+		<div class="col-sm-7 px-5">
+			<form class="form-control-sm" id="createPaymentLinkForm" th:action="@{/send}" onsubmit="return validatePaymentSubmissionForm()" method="post" autocomplete="off">
+				<!--div class="form-group" >
+					<div class="row justify-content-center">
+						<img class="wise-logo" src="{{url_for('static', filename='images/logo_Paydee_Test.jpg')}}">
+					</div>
+				</div-->
+				
+				<div class="card py-2 px-4 mx-2 mb-2 bg-light border-0">
+				<div class="row justify-content-center pt-4 ">
+					<div class="form-group">
+						<h2 class="text-center">{{companyName}}</h2>
+						<h6 class="text-center">Accept payments wherever you are</h6>
+					</div>
+				</div>
+
+				
+				<!--p class="text-centre m-2 pb-2 font-weight-light">Payment Details</p-->		
+
+	            <div class="form-group form-control-sm">
+	                <div class="input-group ">
+		                <div class="input-group-prepend " >
+		                	<span class="input-group-text" style="font-weight:bold" th:text="${currency}">{{currency}}</span>
+		                </div>
+		                    <input type="number" class="form-control" th:name="amount" placeholder="0.00" step=".01" id="amount" maxlength="4" required/>
+		                </div>
+	                <span id="amountMessage"></span>			            	                    	                		                
+	            </div>
+	            
+	            <div class="form-group form-control-sm m-0">
+	                <div class="input-group input-group-sm ">
+		            	<input type="text" class="form-control" th:name="referenceNumber" id="reference_number" placeholder="Product/Order No." maxlength="11"/>
+		            </div>
+					<!--small id="referenceNumberDesc" class="form-text text-muted" style="opacity:0.5">Suggestions: order number or product name</small-->																            			            
+	            </div>
+	            
+	            <div class="form-group form-control-sm pb-5">
+					<small id="remarksDesc" class="form-text text-muted" style="opacity:0.5">Let your user know what this payment is for *Optional*</small>
+	                <div class="input-group input-group-sm ">
+		            	<input type="text" class="form-control" th:name="remarks" id="remarks" placeholder="e.g. Red Socks, Set Lunch"/>
+		            </div>
+	            </div>	     
+
+				
+				<div class="row justify-content-center my-2">
+				<button th:if="${enabled}" id="generateLinkButton" type="submit" class="btn btn-primary btn-sm" 
+					style="border-color: white;background-color:{{brandColor}};width:70%"> Generate
+				</button>  
+				</div>
+
+
+				<div class="row justify-content-center">		
+					<p class="text-centre font-weight-light">-or-</p>		
+				</div>
+				<div class="row justify-content-center mb-2">
+						<img src="{{url_for('static', filename='images/sent.png')}}" style="width: 30px">
+				</div>						
+				<div class="row justify-content-center">		
+						<p class="text-centre font-weight-light">Email or SMS the payment link to your customer</p>		
+				</div>
+				
+				<div class="input-group input-group-sm ">
+					<div class="input-group-prepend" >
+						<button id="channelDropdown" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:style="'color:white; background-color:'+${brandColor}" style="color:white; background-color:{{brandColor}}">Email</button>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#">Mobile</a>
+							<!--a class="dropdown-item" href="#">Email</a-->
+						</div>
+					</div>	                
+					<input type="text" class="form-control" th:name="mobileEmail" placeholder="Mobile Number/Email" id="mobile_email"/>
+				</div>	
+				<div class="row justify-content-center my-3">	
+					<button th:if="${enabled}" id="sendLinkButton" type="submit" class="btn btn-primary btn-sm" 
+						style="border-color: white;background-color:{{brandColor}}; width:70%">Send
+					</button>			
+				</div>				
+
+
+	            
+			</div>                
+	        </form>	
+        </div>   
+		
+	</div>
+</div>
+
+
+ {% endblock contentA %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1 ,shrink-to-fit=no">
+  <title>Merchant Portal</title>          
+
+  <!-- Bootstrap 5 CSS only -->
+  <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{url_for('static', filename='css/all.min.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/font-awesome.min.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/merchant_styles_v2.css')}}">
+
+  {% block nav %}
+  {% endblock nav %}
+
+</head>
+
+<body>
+
+  {% block contentA %}
+  {% endblock contentA %}
+
+  {% block contentB %}
+  {% endblock contentB %}
+
+  {% block contentC %}
+  {% endblock contentC %}
+
+  {% block contentD %}
+  {% endblock contentD %}
+
+
+  <script src="{{url_for('static', filename='js/jquery-3.5.1.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>  
+
+  {% block script %}
+  {% endblock script %}
+</body>
+
+</html>
