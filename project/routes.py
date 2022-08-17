@@ -5,7 +5,7 @@ from flask import render_template, redirect, url_for, flash, request, send_file,
 @app.route('/home', methods=['GET', 'POST'])
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('Homepage.html', title="Home Page")
+    return render_template('v2_login_merchant.html', title="Home Page")
 
 @app.route('/about', methods=['GET', 'POST'])
 def account():
@@ -15,9 +15,14 @@ def account():
 def forgot_password():
     return render_template('forgot_password.html')
 
-@app.route('/login_merchant', methods=['GET', 'POST'])
-def login_merchant():
-    return render_template('login_merchant.html')    
+@app.route('/v1/login_merchant', methods=['GET', 'POST'])
+def v1_login_merchant():
+    return render_template('v1_login_merchant.html')    
+
+
+@app.route('/v2/login_merchant', methods=['GET', 'POST'])
+def v2_login_merchant():
+    return render_template('v2_login_merchant.html')    
 
 @app.route('/merchant_password_update', methods=['GET', 'POST'])
 def merchant_password_update():
@@ -32,9 +37,19 @@ def merchant_payment_transaction_empty():
     return render_template('merchant_payment_transaction_empty.html', brandColor="#007a7c", companyName="Blue Coffee", currency="RM")      
 
 
-@app.route('/merchant_payment', methods=['GET', 'POST'])
-def merchant_payment():
-    return render_template('merchant_payment.html', brandColor="#007a7c", companyName="Blue Coffee", currency="RM")     
+@app.route('/v1/merchant_payment', methods=['GET', 'POST'])
+def v1_merchant_payment():
+    return render_template('v1_merchant_payment.html', brandColor="#007a7c", companyName="Blue Coffee", currency="RM")     
+
+
+@app.route('/v2/merchant_payment', methods=['GET', 'POST'])
+def v2_merchant_payment():
+    return render_template('v2_merchant_payment.html', brandColor="#007a7c", companyName="Blue Coffee", currency="RM")     
+
+@app.route('/v2B/merchant_payment', methods=['GET', 'POST'])
+def v2B_merchant_payment():
+    return render_template('v2B_merchant_payment.html', brandColor="#007a7c", companyName="Blue Coffee", currency="RM")     
+
 
 @app.route('/merchant_payment_err', methods=['GET', 'POST'])
 def merchant_payment_err():
@@ -49,9 +64,13 @@ def merchant_profile_setting():
 def password_recovery_invalid():
     return render_template('password_recovery_invalid.html')    
 
-@app.route('/password_recovery', methods=['GET', 'POST'])
-def password_recovery():
-    return render_template('password_recovery.html')          
+@app.route('/v1/password_recovery', methods=['GET', 'POST'])
+def v1_password_recovery():
+    return render_template('v1_password_recovery.html')     
+
+@app.route('/v2/password_recovery', methods=['GET', 'POST'])
+def v2_password_recovery():
+    return render_template('v2_password_recovery.html')                
 
 @app.route('/payment_failed', methods=['GET', 'POST'])
 def payment_failed():

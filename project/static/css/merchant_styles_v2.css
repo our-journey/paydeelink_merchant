@@ -1,0 +1,424 @@
+.has-float-label {
+    display: block;
+    position: relative;
+    width: 100%;
+}
+
+.has-float-label label, .has-float-label > span {
+    position: absolute;
+    cursor: text;
+    font-size: 75%;
+    opacity: 1;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+    top: -.5em;
+    left: .75rem;
+    z-index: 3;
+    line-height: 1;
+    padding: 0 3px;
+    background: #fff;
+    font-weight: normal;
+}
+
+.has-float-label > span { /*For select2-bootstrap dropdown set top,left margin 0*/
+    top: 0;
+    left: 0;
+}
+
+.has-float-label label::after, .has-float-label > span::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    background: #fff;
+    height: 2px;
+    top: 50%;
+    left: -.2em;
+    right: -.2em;
+    z-index: -1;
+}
+
+.has-float-label .form-control::-webkit-input-placeholder {
+    opacity: 1;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+}
+
+.has-float-label .form-control::-moz-placeholder {
+    opacity: 1;
+    transition: all .2s;
+}
+
+.has-float-label .form-control:-ms-input-placeholder {
+    opacity: 1;
+    transition: all .2s;
+}
+
+.has-float-label .form-control::placeholder {
+    opacity: 1;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+}
+
+.has-float-label .form-control:placeholder-shown:not(:focus)::-webkit-input-placeholder {
+    opacity: 0;
+}
+
+.has-float-label .form-control:placeholder-shown:not(:focus)::-moz-placeholder {
+    opacity: 0;
+}
+
+.has-float-label .form-control:placeholder-shown:not(:focus):-ms-input-placeholder {
+    opacity: 0;
+}
+
+.has-float-label .form-control:placeholder-shown:not(:focus)::placeholder {
+    opacity: 0;
+}
+
+.has-float-label .form-control:placeholder-shown:not(:focus) + * {
+    font-size: 100%;
+    color: #6c757d;
+    opacity: 1;
+    top: .3em;
+}
+
+.input-group .has-float-label {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    margin-bottom: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.has-float-label .form-control:placeholder-shown:not(:focus) + * {
+    margin-top: 6px;
+}
+
+/*pass_show*/
+[class^="ptxt"] {
+    color: #3366cc;
+    float: right !important;
+    font-size: 15px !important;
+    left: auto !important;
+    background: transparent !important;
+    position: absolute;
+    cursor: pointer !important;
+    top: 30% !important;
+    right: 10px;
+}
+
+#hp  {
+    float: right;
+    margin: 0 0 0 15px;
+}
+#pd  {
+    margin: 0 0 0 15px;
+    vertical-align: middle;
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 7px;
+    font-size: 24px;
+    align-items: center;
+}
+#searchInput {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: center;
+    width: 100%;
+    border-radius: 8px;
+    background: #f1f1f1;
+    text-align: center;
+    margin: 4px 2px;
+    
+}
+
+table {
+    color: rgb(0, 0, 0);
+    border-collapse: collapse;
+    border: none;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#txl{
+    text-align: left;
+}
+
+.wrapper {
+    overflow: hidden;
+    width: auto; /* just for demo */
+   }
+
+   .Text {
+       display: block;
+       overflow: hidden;
+   }
+   .Text1 {
+       display: block;
+       overflow: hidden;
+       text-align: right;
+   }  
+   .Text2 {
+       display: block;
+       overflow: hidden;
+       text-align: right;
+   }
+/*          
+@font-face {
+	font-family: 'Avenir';
+	font-style: normal;
+	font-weight: 400;
+	src: url("font.woff2");
+	unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+latin 
+@font-face {
+	font-family: 'Avenir';
+	font-style: normal;
+	font-weight: 400;
+	src: url("font.woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}*/
+
+@font-face {
+    font-family: 'Avenir';
+    src: url('../fonts/AvenirNextLTPro-Regular.eot');
+    src: url('../fonts/AvenirNextLTPro-Regular.eot?#iefix')
+        format('embedded-opentype'),
+      url('../fonts/AvenirNextLTPro-Regular.woff2') format('woff2'),
+      url('../fonts/AvenirNextLTPro-Regular.woff') format('woff'),
+      url('../fonts/AvenirNextLTPro-Regular.ttf') format('truetype'),
+      url('../fonts/AvenirNextLTPro-Regular.svg#AvenirNextLTPro-Regular')
+        format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'AvenirBold';
+    src: url('../fonts/AvenirNextLTPro-Bold.eot');
+    src: url('../fonts/AvenirNextLTPro-Bold.eot?#iefix')
+        format('embedded-opentype'),
+      url('../fonts/AvenirNextLTPro-Bold.woff2') format('woff2'),
+      url('../fonts/AvenirNextLTPro-Bold.woff') format('woff'),
+      url('../fonts/AvenirNextLTPro-Bold.ttf') format('truetype'),
+      url('../fonts/AvenirNextLTPro-Bold.svg#AvenirNextLTPro-Bold')
+        format('svg');
+    font-weight: bold;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'AvenirItalic';
+    src: url('../fonts/AvenirNextLTPro-It.eot');
+    src: url('../fonts/AvenirNextLTPro-It.eot?#iefix')
+        format('embedded-opentype'),
+      url('../fonts/AvenirNextLTPro-It.woff2') format('woff2'),
+      url('../fonts/AvenirNextLTPro-It.woff') format('woff'),
+      url('../fonts/AvenirNextLTPro-It.ttf') format('truetype'),
+      url('../fonts/AvenirNextLTPro-It.svg#AvenirNextLTPro-It') format('svg');
+    font-weight: normal;
+    font-style: italic;
+  } 
+
+
+/*
+nav,header,body{
+   	font-family:'Avenir';
+   	
+}*/
+
+iframe {
+	overflow:hidden;
+	display:block;
+}
+   
+   .nav-pills > li > a.active {
+   	background-color: black!important;
+}
+
+.nav-pills > li > a.nav-link:not(.active) {
+   	color: black;
+}
+
+button.btn:hover , a.btn:hover {
+ 	opacity: 0.7;
+}
+
+
+@media screen and (max-width: 700px) {
+
+    #merchantLogo.logo {
+    	display: block;
+    }
+    
+    #merchantInfo {
+	    display: none;
+    }
+    
+    .card {
+    	border-style: none;
+    }
+}
+
+#merchantLogo {
+    display: none;
+}
+
+#emailButton {
+	border-radius: 5px;
+	border-color:white;
+	background-color: #F8A1A1;
+}
+    
+.ct-info-name {
+	color:white;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 29px;
+	
+	padding-top: 30px;
+}
+
+.ct-info-logo {
+	padding-top: 9px;
+}
+
+.ct-info-description {
+	color:white;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 22px;
+	
+	padding-top: 31px;
+}
+
+.ct-info-address {
+	color:white;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 11px;
+	line-height: 13px;
+	
+	padding-top: 23px;
+	padding-left :120px;
+	padding-right :120px;
+}
+
+.ct-info-phone {
+	color:white;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 11px;
+	line-height: 13px;
+	
+	padding-top: 20px;
+	padding-bottom: 46px;
+}
+
+.ct-pg-name {
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 22px;
+	
+	padding-top: 6px;
+}
+
+.ct-pg-amount {
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 29px;
+	
+	padding-top: 23px;
+}
+
+.ct-pg-method {
+	font-style: normal;
+	font-weight: normal;
+	font-size: 13px;
+	line-height: 16px;
+	
+	padding-top: 28px;
+}
+
+.ct-pp-name {
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 22px;
+	
+	padding-top: 6px;
+}
+
+.ct-pp-amount {
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 29px;
+	
+	padding-top: 23px;
+}
+
+.ct-pp-status {
+	padding-top: 24px;
+	
+	color : #F8A1A1;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 29px;
+}
+
+.ct-pp-details {
+	padding-top: 11px;
+	
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 22px;
+}
+
+.ct-pp-email {
+	padding-top: 109px;
+	
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 17px;
+		
+}
+
+.fa-ul{
+	font-size: 13px !important;
+}
+
+#message{
+	font-size: 13px !important;
+}
+
+#oldNewPassMessage{
+	font-size: 13px !important;
+}
+
+.remarksInput{
+  border: 0;
+  border-bottom: 2px solid black;	
+}
